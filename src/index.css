@@ -1,0 +1,39 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Replace these basic styles with Tailwind CSS once functionality is finished */
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Nav links */
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+nav ul li a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Leftmost nav, always displayed */
+.main-menu {
+    flex-basis: 5%;
+    border: 1px solid red;
+}
+
+/* Sidebar: only open when expanded by user */
+.sidebar {
+    flex-basis: 20%;
+    border: 1px solid blue;
+}
+
+.note-editor {
+    flex-basis: 75%;
+    border: 3px solid grey;
+
+}
