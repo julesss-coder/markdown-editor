@@ -1,6 +1,6 @@
-@import 'tailwindcss/base';
+/* @import 'tailwindcss/base';
 @import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss/utilities'; */
 
 /* Replace these basic styles with Tailwind CSS once functionality is finished */
 .app-container {
@@ -35,5 +35,30 @@ nav ul li a {
 .note-editor {
     flex-basis: 75%;
     border: 3px solid grey;
+    display: flex;
+    flex-direction: column;
 
+}
+
+.note {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.note-title {
+    /* Fixed height */
+    flex: 0 1 30px; 
+}
+
+.note-created, 
+.note-last-updated {
+    /* Sized to content */
+    flex: 0 1 auto;
+}
+
+.note-content {
+    border: 1px solid gray;
+    /* Take up remaining vertical space */
+    flex: 1 1 auto;
 }
