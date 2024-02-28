@@ -23,8 +23,8 @@ const App = () => {
 
   const createNote = () => {
     // Get highest numerical id in notes object and increment by 1 to create next id
-    let lastId = Math.max(...Object.keys(notes).map(stringId => +stringId));
-    lastId++;
+    let lastId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
+    console.log("lastId: ", lastId);
 
     setNotes({
       ...notes, 
@@ -69,9 +69,24 @@ const App = () => {
     setNotes(updatedNotes);
   };
 
+  const deleteNote = (e, id) => {
+    console.log("deleteNote() runs, e: ", e);
+    console.log("id: ", id);
+    const updatedNotes = {...notes};
+    delete updatedNotes[id];
+    setNotes(updatedNotes);
+    id > 0 ? setEditId(id - 1) : setEditId(0);
+  };
+
+  const openNote = (e) => {
+    console.log("openNote() runs: e: ", +e.target.id);
+    setEditId(+e.target.id);
+  };
+
 
 
   console.log("notes: ", notes);
+  console.log("editId: ", editId);
 
   return (
     <div className="app-container">
@@ -84,7 +99,20 @@ const App = () => {
         </ul>
       </nav>
       <div className="sidebar">
-        <nav className="sidebar-menu">
+        <nav className="sidebar-main-menu">
+          <ul>
+            <li>
+              <a href="#">Folders</a>
+            </li>
+            <li>
+              <a href="#">Search</a>
+            </li>
+            <li>
+              <a href="#">Bookmarks</a>
+            </li>
+          </ul>
+        </nav>
+        <nav className="sidebar-sub-menu">
           <ul>
             <li onClick={createNote}>
               <a href="#">New file</a>
@@ -94,14 +122,27 @@ const App = () => {
             </li>
           </ul>
         </nav>
-        <div className="vault-contents">Folders and files</div>
+        <div className="vault-contents" onClick={(e) => openNote(e)}>
+          {
+            notes && Object.keys(notes).length > 0 ?
+              Object.values(notes).map(note => {
+                return <p key={note.id} id={note.id}>{note.title ? note.title : "Untitled"}</p>
+              })
+              : "No files created yet."
+          }
+        </div>
       </div>
       <main className="note-editor">
         {/* Display the note by the id of the one clicked/created */}
         {/* Currently showing the last note because I'm working on creating a new note */}
-        {notes ? (
+        {notes && Object.keys(notes).length > 0 ? (
           
             <div className="note" key={notes[editId].id}>
+              <nav className="note-nav">
+                <li onClick={(e) => deleteNote(e, notes[editId].id)}>
+                  <a href="#">Delete file</a>
+                </li>
+              </nav>
               <input className='note-title' value={notes[editId].title} onChange={(e) => editNoteTitle(notes[editId].id, e)}></input>
               <small className='note-created'>Created: {notes[editId].created}</small>
               <br />

@@ -31,6 +31,9 @@ Notes contain:
 - Update note
 - Delete note
 - save note in local storage
+- Sider when expanded:
+   - Navbar with "new file", "new folder"
+   - Shows all files and folders
 - display all notes in side pane
 
 -- Set up version 1, continue with NetNinja course on React

@@ -32,6 +32,11 @@ nav ul li a {
     border: 1px solid blue;
 }
 
+.sidebar-main-menu,
+.sidebar-sub-menu {
+    border: 1px solid lightcoral;
+}
+
 .note-editor {
     flex-basis: 75%;
     border: 3px solid grey;
