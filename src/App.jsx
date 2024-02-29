@@ -1,9 +1,12 @@
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 
 const App = () => {
+  console.log("ReactMarkdown: ", ReactMarkdown);
+
   const [notes, setNotes] = useState({
     // Using numeric and incrementing (by 1) keys as ids because in case of a large number of notes, this allows constant time lookups and updates.
     0: {
@@ -15,8 +18,8 @@ const App = () => {
     }
   });
 
-  // Upon opening, first note is shown
-  const [editId, setEditId] = useState(0);
+  // Upon opening, no note is shown
+  const [editId, setEditId] = useState(null);
 
 
   const markdown = "# Hi, *Pluto*! url: www.pluto.com";
@@ -27,10 +30,10 @@ const App = () => {
     console.log("lastId: ", lastId);
 
     setNotes({
-      ...notes, 
+      ...notes,
       [lastId]: {
         id: lastId,
-        title: "",
+        title: "Untitled",
         content: "",
         created: Date.now(),
         updated: Date.now()
@@ -46,7 +49,7 @@ const App = () => {
 
     const updatedNotes = Object.values(notes).map(note => {
       if (note.id === id) {
-        return {...note, content: e.target.value};
+        return { ...note, content: e.target.value };
       } else {
         return note;
       }
@@ -60,7 +63,7 @@ const App = () => {
 
     const updatedNotes = Object.values(notes).map(note => {
       if (note.id === id) {
-        return {...note, title: e.target.value};
+        return { ...note, title: e.target.value };
       } else {
         return note;
       }
@@ -72,10 +75,11 @@ const App = () => {
   const deleteNote = (e, id) => {
     console.log("deleteNote() runs, e: ", e);
     console.log("id: ", id);
-    const updatedNotes = {...notes};
+    const updatedNotes = { ...notes };
     delete updatedNotes[id];
     setNotes(updatedNotes);
-    id > 0 ? setEditId(id - 1) : setEditId(0);
+    setEditId(null);
+    // TODO editId should not be set to 0, as 0 might have been deleted. When a file is deleted (or closed - later when tabs enabled), just show standard screen "No file is open". Extract components.
   };
 
   const openNote = (e) => {
@@ -126,7 +130,7 @@ const App = () => {
           {
             notes && Object.keys(notes).length > 0 ?
               Object.values(notes).map(note => {
-                return <p key={note.id} id={note.id}>{note.title ? note.title : "Untitled"}</p>
+                return <p key={note.id} id={note.id}>{note.title}</p>
               })
               : "No files created yet."
           }
@@ -135,23 +139,46 @@ const App = () => {
       <main className="note-editor">
         {/* Display the note by the id of the one clicked/created */}
         {/* Currently showing the last note because I'm working on creating a new note */}
-        {notes && Object.keys(notes).length > 0 ? (
-          
-            <div className="note" key={notes[editId].id}>
-              <nav className="note-nav">
-                <li onClick={(e) => deleteNote(e, notes[editId].id)}>
-                  <a href="#">Delete file</a>
-                </li>
-              </nav>
-              <input className='note-title' value={notes[editId].title} onChange={(e) => editNoteTitle(notes[editId].id, e)}></input>
-              <small className='note-created'>Created: {notes[editId].created}</small>
-              <br />
-              <small className='note-last-updated'>Last updated: {notes[editId].updated}</small>
-              <textarea className='note-content' onChange={(e) => editNote(notes[editId].id, e)} value={notes[editId].content}></textarea>
-            </div>
 
-        ) :
-          "No notes created yet."
+        {/* 
+          if editId is not null:
+            if there are notes:
+              show them
+            else if there are none:
+              show "no notes"
+
+          else if editId is null:
+            Show "no file open"
+
+          When is editId null?
+          - on page load
+          - on deleting a file
+        
+        */}
+
+
+        {/* Check if editId is null or undefined. editId = 0 does not fulfill this conditin. */}
+        {editId != null ?
+          notes && Object.keys(notes).length > 0 ?
+            (
+              <div className="note" key={notes[editId].id}>
+                <nav className="note-nav">
+                  <li onClick={(e) => deleteNote(e, notes[editId].id)}>
+                    <a href="#">Delete file</a>
+                  </li>
+                </nav>
+                <input className='note-title' value={notes[editId].title} onChange={(e) => editNoteTitle(notes[editId].id, e)} placeholder="Title"></input>
+                <small className='note-created'>Created: {notes[editId].created}</small>
+                <br />
+                <small className='note-last-updated'>Last updated: {notes[editId].updated}</small>
+                <textarea className='note-content' onChange={(e) => editNote(notes[editId].id, e)} value={notes[editId].content} placeholder="Note content"></textarea>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} onChange={(e) => editNote(notes[editId].id, e)}>
+                  {notes[editId]?.content || ''}
+                </ReactMarkdown>
+              </div>
+            ) :
+            "No notes created yet."
+          : <p>No file is open</p>
         }
       </main>
     </div>
