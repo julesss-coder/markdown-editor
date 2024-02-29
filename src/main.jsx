@@ -25,10 +25,7 @@ const router = createBrowserRouter(
           let response = await fetch(`http://localhost:3000/notes/${params.id}`);
           let data = await response.json();
           return data;
-        }
-
-        }
-
+        }}
       />
 
       {/* Error handling */}

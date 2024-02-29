@@ -1,10 +1,10 @@
 import Markdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 
 
-const App = () => {
+const NotesManager = () => {
   console.log("ReactMarkdown: ", ReactMarkdown);
 
   const [notes, setNotes] = useState({
@@ -186,4 +186,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default NotesManager;

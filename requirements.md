@@ -26,15 +26,28 @@ Notes contain:
 - Delete note
 
 ### Version 1
-- Create note
-- Read note
-- Update note
+- [x] Create note
+- [x] Read note
+- [x] Update note
 - Delete note
 - save note in local storage
 - Sider when expanded:
    - Navbar with "new file", "new folder"
    - Shows all files and folders
 - display all notes in side pane
+- Notes should be in Markdown
+- Links should be by note id, not index, because in notes array in db.json, deleting notes can change indices. On creating new note, highest id has to be incremented
+
+### Layout
+#### Home
+- Sider
+- No file is open
+#### New
+- Sider
+- New note
+#### Note id
+- Sider
+- Note with the chosen id
 
 -- Set up version 1, continue with NetNinja course on React
 -- This is almost exactly like a todo list
