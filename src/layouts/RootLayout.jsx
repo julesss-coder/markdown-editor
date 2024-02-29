@@ -1,31 +1,57 @@
+import { useEffect, useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 
 const RootLayout = () => {
+  const [notes, setNotes] = useState(null);
   // State with current files goes here
-  const files = ["file 1", "file 2", "file 3"];
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const response = await fetch('http://localhost:3000/notes');
+      const data = await response.json();
+
+      // Get highest note id - do that on creating new note
+      // let ids = Object.values(data).map(item => {
+      //   return +item.id;
+      // });
+      // console.log(Math.max(...ids));
+
+
+      setNotes(data);
+    };
+
+    fetchNotes();
+  }, []);
+
+  // 
 
   return (
     <>
+      <div className="app-container">
       {/* Navbar */}
-      <div className="root-layout">
+      <div className="sidebar root-layout">
         {/* This nav goes inside the Sider */}
         <header>
           <nav>
             <NavLink to="/">Home</NavLink>
+            <br />
             <NavLink to="/new">New file</NavLink>
+            <br />
 
             {/* Does this work? */}
-            {files.map((file, index) => (
-              <NavLink to={`/${index}`}>{file}</NavLink>
+            {notes && notes.map((note) => (
+              <>
+                <NavLink to={`/${note.id}`} key={note.id}>{note.title}</NavLink>
+                <br />
+              </>
             ))}
           </nav>
         </header>
       </div>
 
       {/* Content outlet, next to Sider */}
-      <main>
         <Outlet />
-      </main>
+
+      </div>
     </>
   );
 };
