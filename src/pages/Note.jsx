@@ -6,10 +6,23 @@ import remarkGfm from 'remark-gfm';
 const Note = () => {
   const { id } = useParams();
   const currentNote = useLoaderData();
+  console.log("id, currentNote: ", id, currentNote);
+
+
   // This only sets the initial value of note, does not update each time the value of `currentNote` changes.
   const [note, setNote] = useState(currentNote);
 
   useEffect(() => {
+    console.log("currentNote.id: ", Number.isInteger(currentNote.id));
+
+    if (Number.isInteger(currentNote.id) === false) {
+      // Get nextId
+      // let lastId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
+      // console.log("lastId: ", lastId);
+    }
+
+
+
     setNote(currentNote);
   }, [currentNote]);
 
@@ -42,7 +55,7 @@ const Note = () => {
   
   return (
     <main className="note-editor">
-      <div className="note" key={id}>
+      <div className="note" key={note.id}>
         <nav className="note-nav">
           <li onClick={(e) => deleteNote(e, id)}>
             <a href="#">Delete file</a>

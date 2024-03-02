@@ -26,11 +26,11 @@ Notes contain:
 - Delete note
 
 ### Version 1
-- [x] Create note
+- [ ] Create note
 - [x] Read note
 - [x] Update note
-- Delete note
-- save note in local storage
+- [ ] Delete note
+- [x] save note in db.json
 - Sider when expanded:
    - Navbar with "new file", "new folder"
    - Shows all files and folders
