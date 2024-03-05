@@ -14,7 +14,6 @@ const router = createBrowserRouter(
       element={<RootLayout />}
       loader={
         async ({ params }) => {
-          console.log("params in RootLayout loader: ", params);
           let response = await fetch(`http://localhost:3000/notes`);
           let data = await response.json();
           return data;
@@ -32,14 +31,16 @@ const router = createBrowserRouter(
         loader={async ({ params }) => {
           console.log(params);
 
+          const responseNew = await fetch('http://localhost:3000/new');
+          const dataNew = await responseNew.json();
+          console.log("dataNew: ", dataNew);
+
           // First fetch request
-          const response1 = await fetch('http://localhost:3000/notes', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          const notes = await response1.json();
+          const response1 = await fetch('http://localhost:3000/notes');
+          // TODO restructure data so destructuring is not necessary
+          const {notes} = await response1.json();
+
+          console.log("notes: ", notes);
 
           let nextId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
           console.log("nextId: ", nextId);
@@ -53,16 +54,17 @@ const router = createBrowserRouter(
             "updated": Date.now()
           };
 
-          const response = await fetch('http://localhost:3000/notes', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newNote),
-          });
-          const data = await response.json();
-          console.log('data: ', data);
-          return data;
+          // const response = await fetch('http://localhost:3000/notes', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify(newNote),
+          // });
+          // const data = await response.json();
+          // console.log('data: ', data);
+          // return data;
+          return null;
         }}
       // Alternativ: erzeuge random id, mache POST request an Datenbank
       />

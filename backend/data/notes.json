@@ -1,0 +1,18 @@
+{
+    "notes": [
+      {
+        "id": "0",
+        "title": "TEST NOTE",
+        "content": "# Headline",
+        "created": 1633027200000,
+        "updated": 1633027200000
+      },
+      {
+        "id": "1",
+        "title": "First entry",
+        "content": "Hello, world!",
+        "created": 1633027200000,
+        "updated": 1633027200000
+      }
+    ]
+  }
