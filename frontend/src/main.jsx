@@ -18,7 +18,8 @@ const router = createBrowserRouter(
           let data = await response.json();
           return data;
         }
-      }>
+      }
+      >
       <Route index element={<Home />} />
       <Route
         path="/new"

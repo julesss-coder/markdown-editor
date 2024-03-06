@@ -7,22 +7,21 @@ const app = express();
 // Enable all CORS requests
 app.use(cors());
 
-app.get("/", (request, response) => {
-    response.send("hello, world!");
-});
+// app.get("/", (request, response) => {
+//     console.log("request: ", request.body);
+//     response.send(JSON.stringify("hello, world!"));
+// });
 
 
 // ENDPOINTS
 // GET all notes: "/notes"
-// GET a note with id x: "/:id"
-// PUT a node
 app.get("/notes", (request, response) => {
     fs.readFile('data/notes.json', 'utf8', (error, data) => {
         if (error) {
             console.error(error);
             response.status(500).json({error: 'Error reading notes'});
         } else {
-            response.send(data);
+            response.json(JSON.parse(data));
         }
     });
 });

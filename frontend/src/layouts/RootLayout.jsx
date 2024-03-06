@@ -3,7 +3,7 @@ import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 
 const RootLayout = () => {
   const { notes } = useLoaderData();
-  console.log("loadedNotes: ", notes);
+  console.log("notes: ", notes);
 
   // TODO Titles in Sider need to update when changed. => use action callback and useActionData hook to solve this?
 
@@ -47,7 +47,7 @@ const RootLayout = () => {
             {/* Does this work? */}
             {notes && notes.map((note) => (
               <>
-                <NavLink to={`/${note.id}`} key={note.id}>{note.title}</NavLink>
+                <NavLink to={`/${note.id}`} key={note.id}>{note.title ? note.title : 'Untitled'}</NavLink>
                 <br />
               </>
             ))}
