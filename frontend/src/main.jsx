@@ -14,6 +14,7 @@ const router = createBrowserRouter(
       element={<RootLayout />}
       loader={
         async ({ params }) => {
+          // Todo add error handling
           let response = await fetch(`http://localhost:3000/notes`);
           let data = await response.json();
           return data;
@@ -24,22 +25,14 @@ const router = createBrowserRouter(
       <Route
         path="/new"
         element={<Note />}
-        // loader={async ({ params }) => {
-        //   let response = await fetch(`http://localhost:3000/notes`);
-        //   let data = await response.json();
-        //   return data;
-        // }}
         loader={async ({ params }) => {
-          console.log(params);
+          console.log("params in /new: ", params);
 
-          const responseNew = await fetch('http://localhost:3000/new');
-          const dataNew = await responseNew.json();
-          console.log("dataNew: ", dataNew);
-
-          // First fetch request
-          const response1 = await fetch('http://localhost:3000/notes');
+          // Get all notes to get the next id
+          const responseAllNotes = await fetch('http://localhost:3000/notes');
           // TODO restructure data so destructuring is not necessary
-          const {notes} = await response1.json();
+          const {notes} = await responseAllNotes.json();
+          // Add error handling. If error, create random id. Replace in Note?
 
           console.log("notes: ", notes);
 
@@ -55,18 +48,18 @@ const router = createBrowserRouter(
             "updated": Date.now()
           };
 
-          // const response = await fetch('http://localhost:3000/notes', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify(newNote),
-          // });
-          // const data = await response.json();
-          // console.log('data: ', data);
-          // return data;
-          return null;
+          const response = await fetch('http://localhost:3000/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newNote),
+          });
+          const data = await response.json();
+          console.log('data: ', data);
+          return data;
         }}
+
       // Alternativ: erzeuge random id, mache POST request an Datenbank
       />
       <Route

@@ -6,6 +6,7 @@ const port = 3000;
 const app = express();
 // Enable all CORS requests
 app.use(cors());
+app.use(express.json());
 
 // app.get("/", (request, response) => {
 //     console.log("request: ", request.body);
@@ -22,6 +23,33 @@ app.get("/notes", (request, response) => {
             response.status(500).json({error: 'Error reading notes'});
         } else {
             response.json(JSON.parse(data));
+        }
+    });
+});
+
+app.post("/notes", (request, response) => {
+    const newNote = request.body;
+    console.log("newNote in app.post: ", newNote);
+
+    fs.readFile('data/notes.json', 'utf8', (error, data) => {
+        if (error) {
+            console.error(error);
+            response.status(500).json({error: 'Error reading notes'});
+        } else {
+            const notes = JSON.parse(data);
+            console.log("NOTES: ", notes);
+            notes.notes[newNote.id] = newNote;
+            
+            // notes.push(newNote);
+
+            fs.writeFile('data/notes.json', JSON.stringify(notes, null, 2), (error) => {
+                if (error) {
+                    console.error(error);
+                    response.status(500).json({error: 'Error writing note'});
+                } else {
+                    response.json(newNote);
+                }
+            });
         }
     });
 });

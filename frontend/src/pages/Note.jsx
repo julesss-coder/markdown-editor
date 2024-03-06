@@ -26,6 +26,7 @@ const Note = () => {
     setNote(currentNote);
   }, [currentNote]);
 
+  // TODO Redo editing and saving using server.js
   const editNote = useCallback((e) => {
     const updatedNote = { ...note, content: e.target.value };
     setNote(updatedNote);
