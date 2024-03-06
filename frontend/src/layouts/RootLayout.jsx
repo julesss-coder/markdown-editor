@@ -45,7 +45,7 @@ const RootLayout = () => {
             <br />
 
             {/* Does this work? */}
-            {notes && notes.map((note) => (
+            {notes && Object.values(notes).map((note) => (
               <>
                 <NavLink to={`/${note.id}`} key={note.id}>{note.title ? note.title : 'Untitled'}</NavLink>
                 <br />

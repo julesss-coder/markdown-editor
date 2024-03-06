@@ -26,6 +26,23 @@ app.get("/notes", (request, response) => {
     });
 });
 
+// GET a note with a specific ID
+app.get("/notes/:id", (request, response) => {
+    const { id } = request.params; 
+    fs.readFile('data/notes.json', 'utf8', (error, data) => {
+        if (error) {
+            console.error(error);
+            response.status(500).json({error: 'Error reading notes'});
+        } else {
+            const { notes } = JSON.parse(data);
+            if (notes[id]) {
+                response.json(notes[id]);
+            } else {
+                response.status(404).json({error: 'Note not found'});
+            }
+        }
+    });
+})
 
 // What happens with GET request to /new?
 app.get("/new", (request, response) => {
