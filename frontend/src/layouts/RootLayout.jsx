@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 
 const RootLayout = () => {
-  let notes = useLoaderData();
-  if (notes.message) {
-    return <div>Error: {notes.message}</div>
-  } 
+  let notes = useLoaderData(); // TODO handle the case where `notes` is actually an error
   console.log("notes: ", notes);
 
 

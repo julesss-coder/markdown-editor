@@ -34,11 +34,12 @@ app.get("/notes", async (request, response) => {
     }
 });
 
+// DONE
 app.post("/notes", async (request, response) => {
     const newNote = request.body;
 
     // Validate new note
-    if (!newNote.id) {
+    if (newNote.id == null) {
         return response.status(400).json({error: 'Invalid note format - id missing'});
     }
     let notes;
@@ -62,6 +63,7 @@ app.post("/notes", async (request, response) => {
 });
 
 // GET a note with a specific ID
+// DONE
 app.get("/notes/:id", async (request, response) => {
     const { id } = request.params; 
     let notes;
@@ -87,27 +89,37 @@ app.get("/notes/:id", async (request, response) => {
     }
 });
 
+// Update a note
+app.put('/notes/:id', async (request, response) => {
+    const updatedNote = request.body;
+    const id = updatedNote.id;
 
-// app.get("/notes/:id", (request, response) => {
-//     const { id } = request.params; 
-//     fs.readFile('data/notes.json', 'utf8', (error, data) => {
-//         if (error) {
-//             console.error(error);
-//             response.status(500).json({error: 'Error reading notes'});
-//         } else {
-//             const { notes } = JSON.parse(data);
-//             if (notes[id]) {
-//                 response.json(notes[id]);
-//             } else {
-//                 response.status(404).json({error: 'Note not found'});
-//             }
-//         }
-//     });
-// });
+    let notes;
+    try {
+        notes = await fs.readFile('data/notes.json', {encoding: 'utf-8'});
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({error: 'Error reading notes'});
+        return;
+    }
 
-// What happens with GET request to /new?
-app.get("/new", (request, response) => {
-    response.send(JSON.stringify("request to /new received"));
+    try {
+        notes = JSON.parse(notes);
+        notes[updatedNote.id] = updatedNote;
+        console.log("notes after updating: ", notes);
+
+        try {
+
+            await fs.writeFile('data/notes.json', JSON.stringify(notes, null, 2), {encoding: 'utf-8'});
+            response.status(200).json(notes);
+        } catch (error) {
+            console.error(error);
+            response.status(500).json({error: 'Error updating note'});
+        }
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({error: 'Error updating note'});
+    }
 });
 
 app.listen(port, () => {

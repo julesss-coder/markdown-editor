@@ -13,46 +13,49 @@ const Note = () => {
   const [note, setNote] = useState(currentNote);
 
   useEffect(() => {
-    console.log("currentNote.id: ", Number.isInteger(currentNote.id));
-
-    if (Number.isInteger(currentNote.id) === false) {
-      // Get nextId
-      // let lastId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
-      // console.log("lastId: ", lastId);
-    }
-
-
-
     setNote(currentNote);
+
+    // TODO This is not correct, saves the note with the wrong id
+    return () => {
+      console.log("saveNote() runs, with note.id: ", note.id);
+      saveNote(note);
+    }
   }, [currentNote]);
 
   // TODO Redo editing and saving using server.js
   const editNote = useCallback((e) => {
     const updatedNote = { ...note, content: e.target.value };
     setNote(updatedNote);
-    saveNote(updatedNote);
+    // saveNote(updatedNote);
   }, [note]);
 
     
   const editNoteTitle = useCallback((e) => {
     const updatedNote = { ...note, title: e.target.value };
     setNote(updatedNote);
-    saveNote(updatedNote);
+    // saveNote(updatedNote);
   }, [note]);
   
   const saveNote = async (note) => {
-    const response = await fetch(`http://localhost:3000/notes/${id}`, {
+    console.log("note.id: ", note.id);
+    const response = await fetch(`http://localhost:3000/notes/${note.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(note),
     });
+
+    console.log("response in saveNote(): ", response);
     
+    // TODO Is this correct error handling?
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
   };
+
+  console.log("--- Note rerenders ---");
+  console.log("note.id: ", note.id);
   
   return (
     <main className="note-editor">

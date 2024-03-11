@@ -33,11 +33,11 @@ const router = createBrowserRouter(
       }
       >
       <Route index element={<Home />} />
+      {/* DONE */}
       <Route
         path="/new"
         element={<Note />}
         loader={async ({ params }) => {
-          console.log("params in /new: ", params);
           let notes;
 
           try {
@@ -45,23 +45,18 @@ const router = createBrowserRouter(
             const responseAllNotes = await fetch('http://localhost:3000/notes');
 
             if (!responseAllNotes.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`); // Where is this error caught? In the catch block?
+              throw new Error(`HTTP error! status: ${responseAllNotes.status}`);
             }
 
             notes = await responseAllNotes.json();
-            console.log("notes: ", notes);
           } catch (error) {
             console.error(error);
             return error;
           }
 
-          // Add error handling. If error, create random id. Replace in Note?
-
           console.log("notes: ", notes);
 
           let nextId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
-          console.log("nextId: ", nextId);
-
 
           const newNote = {
             "id": nextId,
@@ -71,7 +66,6 @@ const router = createBrowserRouter(
             "updated": Date.now()
           };
 
-          // Redo POST endpoint before fixing this
           const response = await fetch('http://localhost:3000/notes', {
             method: 'POST',
             headers: {
@@ -80,7 +74,6 @@ const router = createBrowserRouter(
             body: JSON.stringify(newNote),
           });
           const data = await response.json();
-          console.log('data: ', data);
           return data;
         }}
       />

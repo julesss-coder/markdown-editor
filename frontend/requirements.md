@@ -39,8 +39,8 @@ Notes contain:
 - Links should be by note id, not index, because in notes array in db.json, deleting notes can change indices. On creating new note, highest id has to be incremented
 
 ### Version 2 - Fullstack version
-- [ ] Create note and save in notes.db
-   -  [ ] Must also work if no notes exist yet
+- [x] Create note and save in notes.db
+   -  [x] Must also work if no notes exist yet
 - [x] Read note(s) from notes.db
 - [ ] Update note and save in notes.db
 - [ ] Delete note and save update to notes.db
