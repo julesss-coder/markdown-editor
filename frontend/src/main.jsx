@@ -14,15 +14,25 @@ const router = createBrowserRouter(
       element={<RootLayout />}
       loader={
         async ({ params }) => {
-          // Todo add error handling
-          let response = await fetch(`http://localhost:3000/notes`);
-          let data = await response.json();
-          return data;
+          try {
+            let response = await fetch(`http://localhost:3000/notes`);
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            let data = await response.json();
+            console.log(data);
+            return data;
+          } catch (error) {
+            console.error(error);
+            return error;
+          }
         }
       }
       >
       <Route index element={<Home />} />
-      <Route
+      {/* <Route
         path="/new"
         element={<Note />}
         loader={async ({ params }) => {
@@ -59,21 +69,21 @@ const router = createBrowserRouter(
           console.log('data: ', data);
           return data;
         }}
-
-      // Alternativ: erzeuge random id, mache POST request an Datenbank
-      />
+      /> */}
       <Route
         path="/:id"
         element={<Note />}
         loader={async ({ params }) => {
+          console.log("loader for individual note is running, params.id: ", params.id);
           let response = await fetch(`http://localhost:3000/notes/${params.id}`);
+          console.log(response);
           let data = await response.json();
           return data;
         }}
       />
 
       {/* Error handling */}
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* <Route path="*" element={<Navigate to="/" />} /> */}
     </Route>
   )
 )

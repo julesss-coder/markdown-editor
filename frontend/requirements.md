@@ -38,6 +38,15 @@ Notes contain:
 - Notes should be in Markdown
 - Links should be by note id, not index, because in notes array in db.json, deleting notes can change indices. On creating new note, highest id has to be incremented
 
+### Version 2 - Fullstack version
+- [ ] Create note and save in notes.db
+- [*] Read note(s) from notes.db
+- [ ] Update note and save in notes.db
+- [ ] Delete note and save update to notes.db
+- [ ] notes.db is an object with notes ids
+
+TODO Create Error page
+
 ### Layout
 #### Home
 - Sider

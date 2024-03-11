@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 
 const RootLayout = () => {
-  const { notes } = useLoaderData();
+  let notes = useLoaderData();
+  if (notes.message) {
+    return <div>Error: {notes.message}</div>
+  } 
   console.log("notes: ", notes);
+
 
   // TODO Titles in Sider need to update when changed. => use action callback and useActionData hook to solve this?
 
