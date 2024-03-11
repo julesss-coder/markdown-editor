@@ -34,31 +34,31 @@ app.get("/notes", async (request, response) => {
     }
 });
 
-app.post("/notes", (request, response) => {
+app.post("/notes", async (request, response) => {
     const newNote = request.body;
-    console.log("newNote in app.post: ", newNote);
 
-    fs.readFile('data/notes.json', 'utf8', (error, data) => {
-        if (error) {
+    // Validate new note
+    if (!newNote.id) {
+        return response.status(400).json({error: 'Invalid note format - id missing'});
+    }
+    let notes;
+    
+    try {
+        notes = await fs.readFile('data/notes.json', {encoding: 'utf-8'});
+        notes = JSON.parse(notes);
+        notes[newNote.id] = newNote;
+        
+        try {
+            await fs.writeFile('data/notes.json', JSON.stringify(notes, null, 2), {encoding: 'utf-8'});
+            response.status(201).json(newNote);
+        } catch (error) {
             console.error(error);
-            response.status(500).json({error: 'Error reading notes'});
-        } else {
-            const notes = JSON.parse(data);
-            console.log("NOTES: ", notes);
-            notes.notes[newNote.id] = newNote;
-            
-            // notes.push(newNote);
-
-            fs.writeFile('data/notes.json', JSON.stringify(notes, null, 2), (error) => {
-                if (error) {
-                    console.error(error);
-                    response.status(500).json({error: 'Error writing note'});
-                } else {
-                    response.json(newNote);
-                }
-            });
+            response.status(501).json({error: 'Error posting new note to database.'});
         }
-    });
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({error: 'Error fetching notes before updating them.'});
+    }
 });
 
 // GET a note with a specific ID

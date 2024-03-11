@@ -40,9 +40,11 @@ Notes contain:
 
 ### Version 2 - Fullstack version
 - [ ] Create note and save in notes.db
-- [*] Read note(s) from notes.db
+   -  [ ] Must also work if no notes exist yet
+- [x] Read note(s) from notes.db
 - [ ] Update note and save in notes.db
 - [ ] Delete note and save update to notes.db
+   - [ ] What to render when note is deleted? 
 - [ ] notes.db is an object with notes ids
 
 TODO Create Error page
