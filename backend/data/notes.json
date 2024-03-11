@@ -1,46 +1,16 @@
 {
-  "notes": {
-    "0": {
-      "id": "0",
-      "title": "TEST NOTE",
-      "content": "# Headline",
-      "created": 1633027200000,
-      "updated": 1633027200000
-    },
-    "1": {
-      "id": "1",
-      "title": "First entry",
-      "content": "Hello, world!",
-      "created": 1633027200000,
-      "updated": 1633027200000
-    },
-    "2": {
-      "id": 2,
-      "title": "",
-      "content": "",
-      "created": 1709760291188,
-      "updated": 1709760291188
-    },
-    "3": {
-      "id": 3,
-      "title": "",
-      "content": "",
-      "created": 1709760370249,
-      "updated": 1709760370249
-    },
-    "4": {
-      "id": 4,
-      "title": "",
-      "content": "",
-      "created": 1709760373182,
-      "updated": 1709760373182
-    },
-    "5": {
-      "id": 5,
-      "title": "",
-      "content": "",
-      "created": 1709760450152,
-      "updated": 1709760450152
-    }
+  "0": {
+    "id": "0",
+    "title": "TEST NOTE",
+    "content": "# Headline",
+    "created": 1633027200000,
+    "updated": 1633027200000
+  },
+  "1": {
+    "id": "1",
+    "title": "First entry",
+    "content": "Hello, world!",
+    "created": 1633027200000,
+    "updated": 1633027200000
   }
 }
