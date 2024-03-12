@@ -122,6 +122,31 @@ app.put('/notes/:id', async (request, response) => {
     }
 });
 
+app.delete('/notes/:id', async (request, response) => {
+    const { id } = request.params;
+    // response.json({message: 'delete request received'});
+    let notes;
+
+    try {
+        notes = await fs.readFile('data/notes.json', {encoding: 'utf-8'});
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({error: 'Error reading notes'});
+        return;
+    }
+
+    notes = JSON.parse(notes);
+    try {
+        delete notes[id];
+        console.log("notes after deleting: ", notes);
+        await fs.writeFile('data/notes.json', JSON.stringify(notes, null, 2), {encoding: 'utf-8'});
+        response.status(200).json({message: 'Note successfully deleted'});
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({error: 'Error deleting note'});
+    }
+});
+
 app.listen(port, () => {
     console.log("app listening on port ", port);
 });

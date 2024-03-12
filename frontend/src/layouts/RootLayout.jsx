@@ -2,7 +2,31 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 
 const RootLayout = () => {
-  let notes = useLoaderData(); // TODO handle the case where `notes` is actually an error
+  let loadedNotes = useLoaderData(); // TODO handle the case where `notes` is actually an error
+  const [notes, setNotes] = useState(loadedNotes);
+
+  // fetch notes again once note edited or deleted
+  // useEffect(() => {
+  //   const fetchNotes = async() => {
+  //     try {
+  //       let response = await fetch(`http://localhost:3000/notes`);
+
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       let data = await response.json();
+  //       setNotes(data);
+  //       console.log("notes loaded in / path: ", data);
+  //       // return data;
+  //     } catch (error) {
+  //       console.error(error);
+  //       // return error;
+  //     }
+  //   };
+
+  //   fetchNotes();
+  // }, [loadedNotes]);
 
 
   // TODO Titles in Sider need to update when changed. => use action callback and useActionData hook to solve this?
@@ -30,6 +54,9 @@ const RootLayout = () => {
   // }, []);
 
   // 
+  console.log("*****************RootLautout rerenders***************");
+  console.log("***********notes in RootLayout: ***********", notes);
+  console.log("loadedNotes: ", loadedNotes);
 
   return (
     <>

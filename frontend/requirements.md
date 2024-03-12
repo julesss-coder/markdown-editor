@@ -26,7 +26,7 @@ Notes contain:
 - Delete note
 
 ### Version 1
-- [ ] Create note
+- [x] Create note
 - [x] Read note
 - [x] Update note
 - [ ] Delete note
@@ -47,7 +47,7 @@ Notes contain:
    - [ ] What to render when note is deleted? 
 - [ ] notes.db is an object with notes ids
 - [ ] Set error state in Note component and render error message when error occurs. OR Create error component that is rendered in place of note
-- [ ] Sider should be updated when note title is changed
+- [ ] Sider should be updated when note title is changed (aslo so that deleted notes do not show up there anymore)
 
 TODO Create Error page
 

@@ -15,6 +15,7 @@ const router = createBrowserRouter(
       // DONE
       loader={
         async ({ params }) => {
+          console.log("loader for path / runs");
           try {
             let response = await fetch(`http://localhost:3000/notes`);
 
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
             }
 
             let data = await response.json();
+            console.log("notes loaded in / path: ", data);
             return data;
           } catch (error) {
             console.error(error);
@@ -50,7 +52,7 @@ const router = createBrowserRouter(
             notes = await responseAllNotes.json();
           } catch (error) {
             console.error(error);
-            return error;
+            return error; // Should I return redirect() here?
           }
 
           let nextId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;

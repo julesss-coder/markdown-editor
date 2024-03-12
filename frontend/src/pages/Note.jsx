@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef} from 'react';
-import { useParams, useLoaderData } from "react-router-dom";
+import { useParams, useLoaderData, useNavigate} from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -8,10 +8,8 @@ const Note = () => {
   // const { id } = useParams();
   const currentNote = useLoaderData();
   const noteId = currentNote.id;
-  console.log("noteId: ", noteId);
-  console.log("currentNote loaded: ", currentNote);
-
   const timerRef = useRef();
+  const navigate = useNavigate();
 
 
   // This only sets the initial value of note, does not update each time the value of `currentNote` changes.
@@ -47,6 +45,32 @@ const Note = () => {
       saveNote(updatedNote);
     }, 1000);
   }, [note]);
+
+  const deleteNote = async (e) => {
+    try {
+      const response = await fetch(`http://localhost:3000/notes/${note.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        const data = await response.json();
+        // Navigate to home page only AFTER delete request is finished, as home page loader fetches all notes and it needs to fetch the current version
+        navigate('/');
+      }
+    } catch (error) {
+      console.log('Error deleting note.');
+      console.error(error);
+      navigate('/');
+    }
+
+    // TODO Display message that note was successfully deleted? Check Obsidian.
+    // navigate('/');
+  };
   
   const saveNote = async (note) => {
     try {
@@ -75,7 +99,7 @@ const Note = () => {
     <main className="note-editor">
       <div className="note" key={note.id}>
         <nav className="note-nav">
-          <li onClick={(e) => deleteNote(e, id)}>
+          <li onClick={(e) => deleteNote(e)}>
             <a href="#">Delete file</a>
           </li>
         </nav>
