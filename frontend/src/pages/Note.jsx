@@ -5,9 +5,10 @@ import remarkGfm from 'remark-gfm';
 
 const Note = () => {
   // `id` is only available when opening an existing note, not when opening a new note (assumption: when editing a new note, we are still at path /new, not path /:id. id is returned by useParams())
-  const { id } = useParams();
+  // const { id } = useParams();
   const currentNote = useLoaderData();
-  console.log("id: ", id);
+  const noteId = currentNote.id;
+  console.log("noteId: ", noteId);
   console.log("currentNote loaded: ", currentNote);
 
   const timerRef = useRef();
@@ -15,21 +16,13 @@ const Note = () => {
 
   // This only sets the initial value of note, does not update each time the value of `currentNote` changes.
   const [note, setNote] = useState(currentNote);
-  console.log("note: ", note);
 
-  // useEffect(() => {
-  //   setNote(currentNote);
+  useEffect(() => {
+    setNote(currentNote);
+  }, [currentNote]);
 
-  //   // TODO This is not correct, saves the note with the wrong id
-  //   return () => {
-  //     saveNote(note);
-  //   }
-  // }, [currentNote]);
-
-  // TODO Redo editing and saving using server.js
   const editNote = useCallback((e) => {
     const updatedNote = { ...note, content: e.target.value};
-    
     setNote(updatedNote);
 
     if (timerRef.current) {
@@ -74,7 +67,9 @@ const Note = () => {
     }
   };
 
+  console.log("note: ", note);
   console.log("--- Note rerenders ---");
+
   
   return (
     <main className="note-editor">

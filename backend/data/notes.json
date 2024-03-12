@@ -1,37 +1,9 @@
 {
   "0": {
     "id": 0,
-    "title": "TEST",
-    "content": "kjkjkjbn",
-    "created": 1710187497235,
-    "updated": 1710187497235
-  },
-  "1": {
-    "id": 1,
-    "title": "dsfdsf",
-    "content": "xcxcxcxcxchhjhj",
-    "created": 1710187510674,
-    "updated": 1710187510674
-  },
-  "2": {
-    "id": 2,
-    "title": "fdgfdag",
-    "content": "",
-    "created": 1710187576478,
-    "updated": 1710187576478
-  },
-  "3": {
-    "id": 3,
-    "title": "Note number 3",
-    "content": "This is note number 3.\nkdfjdskafjdlskafk;\nhghjgjgkjhgkjjkjkjbkjhlkjhlkjhlkjhlkjhlkjh",
-    "created": 1710187741537,
-    "updated": 1710187741537
-  },
-  "4": {
-    "id": 4,
-    "title": "",
-    "content": "",
-    "created": 1710187769470,
-    "updated": 1710187769470
+    "title": "Note number 0",
+    "content": "This is note number 0",
+    "created": 1710242260638,
+    "updated": 1710242260638
   }
 }

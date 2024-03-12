@@ -71,6 +71,7 @@ const router = createBrowserRouter(
             body: JSON.stringify(newNote),
           });
           const data = await response.json();
+          console.log("data after posting new note: ", data);
           return data;
         }}
       />

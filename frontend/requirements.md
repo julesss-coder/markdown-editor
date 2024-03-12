@@ -46,6 +46,8 @@ Notes contain:
 - [ ] Delete note and save update to notes.db
    - [ ] What to render when note is deleted? 
 - [ ] notes.db is an object with notes ids
+- [ ] Set error state in Note component and render error message when error occurs. OR Create error component that is rendered in place of note
+- [ ] Sider should be updated when note title is changed
 
 TODO Create Error page
 
