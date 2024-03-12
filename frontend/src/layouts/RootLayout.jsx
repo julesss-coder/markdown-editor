@@ -3,7 +3,6 @@ import { Outlet, NavLink, useLoaderData } from "react-router-dom";
 
 const RootLayout = () => {
   let notes = useLoaderData(); // TODO handle the case where `notes` is actually an error
-  console.log("notes: ", notes);
 
 
   // TODO Titles in Sider need to update when changed. => use action callback and useActionData hook to solve this?

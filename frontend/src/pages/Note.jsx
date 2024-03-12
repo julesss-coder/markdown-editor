@@ -1,61 +1,80 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef} from 'react';
 import { useParams, useLoaderData } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 const Note = () => {
+  // `id` is only available when opening an existing note, not when opening a new note (assumption: when editing a new note, we are still at path /new, not path /:id. id is returned by useParams())
   const { id } = useParams();
   const currentNote = useLoaderData();
-  console.log("id, currentNote: ", id, currentNote);
+  console.log("id: ", id);
+  console.log("currentNote loaded: ", currentNote);
+
+  const timerRef = useRef();
 
 
   // This only sets the initial value of note, does not update each time the value of `currentNote` changes.
   const [note, setNote] = useState(currentNote);
+  console.log("note: ", note);
 
-  useEffect(() => {
-    setNote(currentNote);
+  // useEffect(() => {
+  //   setNote(currentNote);
 
-    // TODO This is not correct, saves the note with the wrong id
-    return () => {
-      console.log("saveNote() runs, with note.id: ", note.id);
-      saveNote(note);
-    }
-  }, [currentNote]);
+  //   // TODO This is not correct, saves the note with the wrong id
+  //   return () => {
+  //     saveNote(note);
+  //   }
+  // }, [currentNote]);
 
   // TODO Redo editing and saving using server.js
   const editNote = useCallback((e) => {
-    const updatedNote = { ...note, content: e.target.value };
+    const updatedNote = { ...note, content: e.target.value};
+    
     setNote(updatedNote);
-    // saveNote(updatedNote);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      saveNote(updatedNote);
+    }, 1000);
   }, [note]);
 
     
   const editNoteTitle = useCallback((e) => {
     const updatedNote = { ...note, title: e.target.value };
     setNote(updatedNote);
-    // saveNote(updatedNote);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      saveNote(updatedNote);
+    }, 1000);
   }, [note]);
   
   const saveNote = async (note) => {
-    console.log("note.id: ", note.id);
-    const response = await fetch(`http://localhost:3000/notes/${note.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(note),
-    });
-
-    console.log("response in saveNote(): ", response);
+    try {
+      const response = await fetch(`http://localhost:3000/notes/${note.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(note),
+      });
     
-    // TODO Is this correct error handling?
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.log('Error saving note.');
+      console.error(error);
     }
   };
 
   console.log("--- Note rerenders ---");
-  console.log("note.id: ", note.id);
   
   return (
     <main className="note-editor">
@@ -80,8 +99,3 @@ const Note = () => {
 };
 
 export default Note;
-
-export const noteDetailsLoader = () => {
-  console.log("noteDetailsLoader() runs");
-  return null;
-};

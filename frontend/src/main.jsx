@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Note, { noteDetailsLoader } from './pages/Note.jsx';
+import Note from './pages/Note.jsx';
 import Home from './pages/Home.jsx';
 import './index.css';
 import { Navigate, Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
@@ -23,7 +23,6 @@ const router = createBrowserRouter(
             }
 
             let data = await response.json();
-            console.log(data);
             return data;
           } catch (error) {
             console.error(error);
@@ -54,8 +53,6 @@ const router = createBrowserRouter(
             return error;
           }
 
-          console.log("notes: ", notes);
-
           let nextId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
 
           const newNote = {
@@ -84,6 +81,7 @@ const router = createBrowserRouter(
         loader={async ({ params }) => {
           let response = await fetch(`http://localhost:3000/notes/${params.id}`);
           let data = await response.json();
+          console.log("data after loading note: ", data);
           return data;
         }}
       />
