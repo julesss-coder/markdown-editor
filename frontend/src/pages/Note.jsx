@@ -91,7 +91,6 @@ const Note = () => {
     }
   };
 
-  console.log("note: ", note);
   console.log("--- Note rerenders ---");
 
   

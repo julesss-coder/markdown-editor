@@ -6,7 +6,10 @@ const port = 3000;
 const app = express();
 // Enable all CORS requests
 app.use(cors());
+
 app.use(express.json());
+
+
 
 // === ENDPOINTS ===
 // GET all notes: "/notes"

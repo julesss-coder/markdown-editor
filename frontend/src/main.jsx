@@ -7,6 +7,7 @@ import { Navigate, Route, createBrowserRouter, createRoutesFromElements, RouterP
 import RootLayout from './layouts/RootLayout.jsx';
 import NewNote from './pages/NewNote.jsx';
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route
@@ -15,7 +16,6 @@ const router = createBrowserRouter(
       // DONE
       loader={
         async ({ params }) => {
-          console.log("loader for path / runs");
           try {
             let response = await fetch(`http://localhost:3000/notes`);
 
@@ -24,7 +24,6 @@ const router = createBrowserRouter(
             }
 
             let data = await response.json();
-            console.log("notes loaded in / path: ", data);
             return data;
           } catch (error) {
             console.error(error);
@@ -39,7 +38,7 @@ const router = createBrowserRouter(
         path="/new"
         element={<Note />}
         loader={async ({ params }) => {
-          let notes;
+          let notes = {};
 
           try {
             // Get all notes to get the next id
@@ -54,6 +53,8 @@ const router = createBrowserRouter(
             console.error(error);
             return error; // Should I return redirect() here?
           }
+
+          
 
           let nextId = Object.keys(notes).length > 0 ? (Math.max(...Object.keys(notes).map(stringId => +stringId)) + 1) : 0;
 
@@ -73,7 +74,6 @@ const router = createBrowserRouter(
             body: JSON.stringify(newNote),
           });
           const data = await response.json();
-          console.log("data after posting new note: ", data);
           return data;
         }}
       />
